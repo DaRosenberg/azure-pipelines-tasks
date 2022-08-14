@@ -145,8 +145,13 @@ async function run() {
         };
 
         process.on("SIGINT", () => {
-            tl.debug('Started cancellation of executing script');
-            bash.killChildProcess();
+            tl.debug('SIGINT received from agent, forwarding to executing script');
+            bash.killChildProcess("SIGINT");
+        });
+
+        process.on("SIGTERM", () => {
+            tl.debug('SIGTERM received from agent, forwarding to executing script');
+            bash.killChildProcess("SIGTERM");
         });
 
         // Listen for stderr.
